@@ -4,8 +4,14 @@
 #include<conio.h>
 using namespace std;
 
-class registro{
+//Por cierto, no pude agregar lo que es contraseña, solo lo que es la clave
+// que funciona como id y contraseña, con ella el cliente se diferencia del resto 
+// y a la vez lo usa para registrarse.
 
+void pausa();
+void error();
+
+class registro{
 	public:
 		string usuario;
 		string clave;
@@ -18,8 +24,79 @@ class registro{
 		void hacerpedido();
 };
 
-void error();
-void pausa();
+/*class cliente{   
+	public:
+		string clave_c = registro.clave;
+		string comida;
+		void anotar();
+};*/
+
+void registro::hacerpedido(){			//este void de hacerpedido, todavia no esta completo, solo queria seguir avanzando puedes borrarlo por ahora si quieres
+    string auxCodigo;
+    ifstream mostrar;
+    bool encontrado=false;
+    mostrar.open("clientes.txt",ios::in);
+    if(mostrar.is_open())
+    {
+        fflush(stdin);
+        cout<<"\t\t\t\t***Consultar codigo de un cliente para hacer pedido***\t\t\t\t\n\n";
+        cout<<"Ingresa la clave del cliente para proseguir con el pedido: ";
+        getline(cin,auxCodigo);
+        getline(mostrar,clave);
+        while(!mostrar.eof())
+        {
+            getline(mostrar,usuario);
+            getline(mostrar,direccion);
+            getline(mostrar,telefono);
+            getline(mostrar,dni);
+
+            if(auxCodigo==clave)
+            {
+				char datos;
+                encontrado=true;
+                cout<<"\n\nRegistro Encontrado\n\n";
+                cout<<"C\242digo: "<<clave<<endl;
+                cout<<"Nombre: "<<usuario<<endl;
+                cout<<"Domicilio: "<<direccion<<endl;
+                cout<<"Celular: "<<telefono<<endl;
+                cout<<"DNI: "<<dni<<endl;
+                cout<<"\n\n";
+				cout<<"\nLos datos son correctos?(s/n)\n";
+				cin>>datos;
+				if (datos=='s'){
+					system("cls");
+					int orden;
+					cout<<"\t\t\t\t***Pedido***\t\t\t\t\n\n";
+					cout<<"Indique su orden\n";
+					cout<<"1. Pan\n";
+					cout<<"2. Pastel de chocolate\n";
+					cout<<"3. Queque\n\n";
+					cin>>orden;
+					cout<<"Lo dejare ahi por ahora\n";
+				}
+				else if(datos == 'n'){
+					cout<<"Intentelo nuevamente\n";
+				}
+            }
+
+            getline(mostrar,clave);
+        }
+
+        if(encontrado==false)
+        {
+            cout<<"\n\nNo se encontro el registro: "<<auxCodigo<<"\n\n";
+        }
+    }
+
+    else
+    {
+        error();
+    }
+
+    mostrar.close();
+	pausa();
+}
+
 
 void registro::registroPrincipal()
 {
@@ -43,7 +120,7 @@ void registro::registroPrincipal()
             registrarse();
             break;
 		case 2:
-            hacerpedido();
+			hacerpedido();
             break;
         case 3:
             break;
@@ -147,65 +224,17 @@ void registro::registrarse()
 	pausa();
 }
 
-void registro::hacerpedido()
+
+int main()
 {
-    string auxCodigo;
-    ifstream mostrar;
-    bool encontrado=false;
-    mostrar.open("clientes.txt",ios::in);
-    if(mostrar.is_open())
-    {
-        fflush(stdin);
-        cout<<"\t\t\t\t***Consultar codigo de un cliente para hacer pedido***\t\t\t\t\n\n";
-        cout<<"Ingresa la clave del cliente para proseguir con el pedido: ";
-        getline(cin,auxCodigo);
-        getline(mostrar,clave);
-        while(!mostrar.eof())
-        {
-            getline(mostrar,usuario);
-            getline(mostrar,direccion);
-            getline(mostrar,telefono);
-            getline(mostrar,dni);
-
-            if(auxCodigo==clave)
-            {
-                encontrado=true;
-                cout<<"\n\nRegistro Encontrado\n\n";
-                cout<<"C\242digo: "<<clave<<endl;
-                cout<<"Nombre: "<<usuario<<endl;
-                cout<<"Domicilio: "<<direccion<<endl;
-                cout<<"Celular: "<<telefono<<endl;
-                cout<<"DNI: "<<dni<<endl;
-                cout<<"\n\n";
-            }
-
-            getline(mostrar,clave);
-        }
-
-        if(encontrado==false)
-        {
-            cout<<"\n\nNo se encontro el registro: "<<auxCodigo<<"\n\n";
-        }
-    }
-
-    else
-    {
-        error();
-    }
-
-    mostrar.close();
-	pausa();
-}
-
-
-int main(){
-  system ("color f0");
+    system ("color f0");
 	system ("cls");
 	int cliente_o_admin;
 	cout<<"\nSi es administrador ingrese el numero 1\n";
 	cout<<"\nSi es cliente ingrese el numero 2\n";
-	cout<<"\nNumero: "; cin>>cliente_o_admin;
+	
 	while(true){
+		cout<<"\nNumero: "; cin>>cliente_o_admin;
 		if (cliente_o_admin==1){
 			cout<<"\nEres el admin\n";
 			break;
@@ -221,7 +250,6 @@ int main(){
 	}
     return 0;
 }
-
 
 void error()
 {
